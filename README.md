@@ -58,7 +58,9 @@ Returns: [{"id":"8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b999
 ### Individual Account
 
         Curl -k -X Get https://localhost:5001/api/useraccounts/8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b9995
+
 Returns: {"id":"8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b9995","firstName":"John","lastName":"Doe","balance":9001.51,"withdrawalLimit":100}
+
 This serves to both authenticate an account/pin combination collected by the UI and provide current balance information to the end user.
 
 ## Update Account Information
