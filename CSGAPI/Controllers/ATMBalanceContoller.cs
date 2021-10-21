@@ -20,11 +20,10 @@ namespace CSGAPI.Controllers
         public ActionResult<List<ATMBalance>> Get() =>
             _ATMBalanceService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetATMBalance")]
-        public ActionResult<ATMBalance> Get(string id)
-        {
+        [HttpGet("{id:length(64)}", Name = "GetATMBalance")]
+        public ActionResult<ATMBalance> Get(string id) {
             var ATMBalance = _ATMBalanceService.Get(id);
-
+    
             if (ATMBalance == null)
             {
                 return NotFound();
@@ -41,7 +40,7 @@ namespace CSGAPI.Controllers
             return CreatedAtRoute("GetATMBalance", new { id = ATMBalance.Id.ToString() }, ATMBalance);
         }
 
-        [HttpPut("{id:length(24)}")]
+        [HttpPut("{id:length(64)}")]
         public IActionResult Update(string id, ATMBalance ATMBalanceIn)
         {
             var ATMBalance = _ATMBalanceService.Get(id);
@@ -56,7 +55,7 @@ namespace CSGAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:length(24)}")]
+        [HttpDelete("{id:length(64)}")]
         public IActionResult Delete(string id)
         {
             var ATMBalance = _ATMBalanceService.Get(id);

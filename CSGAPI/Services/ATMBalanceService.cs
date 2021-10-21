@@ -9,11 +9,12 @@ namespace CSGAPI.Services
     {
         private readonly IMongoCollection<ATMBalance> _ATMBalance;
 
-        public ATMBalanceService(IATMBalanceDBSettings settings) {
+        public ATMBalanceService(IATMBalanceDBSettings settings)
+        {
             var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.ATMBalanceDatabaseName);
+            var database = client.GetDatabase(settings.DatabaseName);
 
-            _ATMBalance = database.GetCollection<ATMBalance>(settings.ATMBalanceDatabaseName);
+            _ATMBalance = database.GetCollection<ATMBalance>(settings.ATMBalanceCollectionName);
         }
 
         public List<ATMBalance> Get() =>
@@ -22,7 +23,8 @@ namespace CSGAPI.Services
         public ATMBalance Get(string id) =>
             _ATMBalance.Find<ATMBalance>(ATMBalance => ATMBalance.Id == id).FirstOrDefault();
 
-        public ATMBalance Create(ATMBalance ATMBalance) {
+        public ATMBalance Create(ATMBalance ATMBalance)
+        {
             _ATMBalance.InsertOne(ATMBalance);
             return ATMBalance;
         }

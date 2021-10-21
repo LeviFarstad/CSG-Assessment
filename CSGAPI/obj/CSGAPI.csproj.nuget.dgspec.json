@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projects\\CSGAPI\\CSGAPI.csproj": {}
+    "C:\\projects\\GSC-Assessment\\CSG-Assessment\\CSGAPI\\CSGAPI.csproj": {}
   },
   "projects": {
-    "C:\\projects\\CSGAPI\\CSGAPI.csproj": {
+    "C:\\projects\\GSC-Assessment\\CSG-Assessment\\CSGAPI\\CSGAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projects\\CSGAPI\\CSGAPI.csproj",
+        "projectUniqueName": "C:\\projects\\GSC-Assessment\\CSG-Assessment\\CSGAPI\\CSGAPI.csproj",
         "projectName": "CSGAPI",
-        "projectPath": "C:\\projects\\CSGAPI\\CSGAPI.csproj",
+        "projectPath": "C:\\projects\\GSC-Assessment\\CSG-Assessment\\CSGAPI\\CSGAPI.csproj",
         "packagesPath": "C:\\Users\\Levi\\.nuget\\packages\\",
-        "outputPath": "C:\\projects\\CSGAPI\\obj\\",
+        "outputPath": "C:\\projects\\GSC-Assessment\\CSG-Assessment\\CSGAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Levi\\AppData\\Roaming\\NuGet\\NuGet.Config"

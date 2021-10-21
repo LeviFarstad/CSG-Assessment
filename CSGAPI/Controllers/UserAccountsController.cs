@@ -15,59 +15,71 @@ namespace CSGAPI.Controllers
         {
             _userAccountsService = userAccountsService;
         }
-
+        
         [HttpGet]
-        public ActionResult<List<UserAccounts>> Get() =>
-            _userAccountsService.Get();
-
-        [HttpGet("{id:length(64)}", Name = "GetUserAccounts")]
-        public ActionResult<UserAccounts> Get(string id) {
-            var userAccounts = _userAccountsService.Get(id);
-    
-            if (userAccounts == null)
-            {
-                return NotFound();
+        public ActionResult<UserAccounts> Get(UserAuthentication UserAuthenticationIn) {
+            var userAccounts = _userAccountsService.Get(UserAuthenticationIn.id);
+            
+            if (userAccounts == null) {
+                return Unauthorized();
             }
 
             return userAccounts;
         }
 
-        [HttpPost]
-        public ActionResult<UserAccounts> Create(UserAccounts userAccounts)
-        {
-            _userAccountsService.Create(userAccounts);
-
-            return CreatedAtRoute("GetUserAccounts", new { id = userAccounts.Id.ToString() }, userAccounts);
-        }
-
-        [HttpPut("{id:length(64)}")]
-        public IActionResult Update(string id, UserAccounts userAccountsIn)
-        {
-            var userAccounts = _userAccountsService.Get(id);
-
-            if (userAccounts == null)
-            {
-                return NotFound();
+        [HttpPut]
+        public ActionResult<UserBalanceUpdateResponse> Update( UserBalanceUpdate UserBalanceUpdateIn) {
+            var userAccounts = _userAccountsService.Get(UserBalanceUpdateIn.id);
+            var _userUpdateBalanceResponse = new UserBalanceUpdateResponse();
+            _userUpdateBalanceResponse.Status = "0";
+            _userUpdateBalanceResponse.StatusText = "Transaction Initialized";
+            _userUpdateBalanceResponse.NewBalance = userAccounts.Balance;
+            if (userAccounts == null) {
+                //No Account found for ID
+                _userUpdateBalanceResponse.Status = "404";
+                _userUpdateBalanceResponse.StatusText = "No record found for supplied ID";
+                return _userUpdateBalanceResponse;
+            }
+            if (UserBalanceUpdateIn.Amount < 0) {
+                //Transaction amount cannot be negative
+                _userUpdateBalanceResponse.Status = "400";
+                _userUpdateBalanceResponse.StatusText = "Transaction account cannot be a negative number, use {'Type': 'Withdrawal'} with a positive number of the amount to withdraw";
+                return _userUpdateBalanceResponse;
             }
 
-            _userAccountsService.Update(id, userAccountsIn);
+            if (UserBalanceUpdateIn.Type.ToLower().Trim() == "withdrawal") {
+                if (UserBalanceUpdateIn.Amount < userAccounts.WithdrawalLimit){
+                    if (UserBalanceUpdateIn.Amount < userAccounts.Balance ) {
+                        userAccounts.Balance -= UserBalanceUpdateIn.Amount;
+                        _userAccountsService.Update(UserBalanceUpdateIn.id, userAccounts);
+                        
+                        _userUpdateBalanceResponse.Status = "200";
+                        _userUpdateBalanceResponse.StatusText = "Withdrawal Processed";
+                        _userUpdateBalanceResponse.NewBalance = userAccounts.Balance;
+                    } else {
+                        //Insufficient Funds
+                        _userUpdateBalanceResponse.Status = "400";
+                        _userUpdateBalanceResponse.StatusText = "Insufficient funds to process transaction";
+                    }
+                } else {
+                    //Withdrawl Limit
+                    _userUpdateBalanceResponse.Status = "400";
+                    _userUpdateBalanceResponse.StatusText = "Amount requested is above withdrawal limit for account, please try again.";
+                }
+            } else if (UserBalanceUpdateIn.Type.ToLower().Trim() == "deposit") {
+                userAccounts.Balance += UserBalanceUpdateIn.Amount;
+                _userAccountsService.Update(UserBalanceUpdateIn.id, userAccounts);
 
-            return NoContent();
-        }
-
-        [HttpDelete("{id:length(64)}")]
-        public IActionResult Delete(string id)
-        {
-            var userAccounts = _userAccountsService.Get(id);
-
-            if (userAccounts == null)
-            {
-                return NotFound();
+                _userUpdateBalanceResponse.Status = "200";
+                _userUpdateBalanceResponse.StatusText = "Deposit Accepted";
+                _userUpdateBalanceResponse.NewBalance = userAccounts.Balance;
+            } else {
+                //Invalid Transaction Type
+                _userUpdateBalanceResponse.Status = "400";
+                _userUpdateBalanceResponse.StatusText = "Invalid Transaction Type. Use type of either 'Deposit' or 'Withdrawal'";
             }
-
-            _userAccountsService.Remove(userAccounts.Id);
-
-            return NoContent();
+            //Unknown Error
+            return _userUpdateBalanceResponse;
         }
     }
 }
