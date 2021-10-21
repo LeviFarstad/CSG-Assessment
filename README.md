@@ -20,14 +20,14 @@ Id is a Sha-256 hash of "CSG:<AccountNumber>:<Pin>"
 
 # Request formats:
   Retrieve Account Information:
-    --All Accounts
+    -All Accounts-
     Example: Curl -k -X Get https://localhost:5001/api/useraccounts
     Returns: [{"id":"8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b9995","firstName":"John","lastName":"Doe","balance":9001.98,"withdrawalLimit":100},
 {"id":"2a8dcbb8b0c31e6424d46a1398ed438286ff36ba81825d81e69ee42437d4e474","firstName":"Jane","lastName":"Doe","balance":9002.41,"withdrawalLimit":250.99},
 {"id":"9f95d559b7b3cf2cbdcbe75a7df20602deebb03fd2e0705a39b0a6d61f113aa6","firstName":"Jacob","lastName":"Doe","balance":99999999999.99,"withdrawalLimit":0.01},
 {"id":"188d4c0162dcd641f0ee58bd5011099347f2a121a690db217455286e85533e60","firstName":"Jingleheimer","lastName":"Doe","balance":2.21,"withdrawalLimit":5000000.99}]
     
-    --Individual Account
+    -Individual Account-
     Example: Curl -k -X Get https://localhost:5001/api/useraccounts/8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b9995
     Returns: {"id":"8494c6a8874a11984f2518c1350e579ab33baac5e9a5c5449ebe3a29079b9995","firstName":"John","lastName":"Doe","balance":9001.51,"withdrawalLimit":100}
     This serves to both authenticate an account/pin combination collected by the UI and provide current balance information to the end user.
