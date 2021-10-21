@@ -7,7 +7,7 @@ I'm using C# with asp.net, and a mongodb backend.
 
 # Database
 Database is a Mongo DB which can be started by executing: 
-        mongod --dbpath <Path to database folder in clone>
+        mongod --dbpath \<Path to database folder in clone\>
 
 Current documents in collection:
 
